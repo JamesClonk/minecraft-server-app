@@ -10,3 +10,10 @@ Makefile
 Dockerfile
 LICENSE
 NOTICE
+README.md
+service.json
+vendor
+scripts
+glide.lock
+glide.yaml
+main.go

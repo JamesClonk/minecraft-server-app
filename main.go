@@ -12,5 +12,10 @@ func main() {
 	if err != nil {
 		log.Fatalf("could not parse VCAP environment: %s\n", err)
 	}
-	fmt.Print(env)
+
+	service, err := env.Services.WithName("world-backup")
+	if err != nil {
+		log.Fatalf("could not get world-backup service from VCAP environment: %s\n", err)
+	}
+	fmt.Println(service)
 }

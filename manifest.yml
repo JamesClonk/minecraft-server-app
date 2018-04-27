@@ -13,4 +13,4 @@ applications:
   env:
     GOPACKAGENAME: github.com/JamesClonk/minecraft-server-app
   command: minecraft-server-app
-path: .
+  path: .
