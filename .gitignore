@@ -23,7 +23,7 @@ rcon-cli
 LICENSE
 NOTICE
 service.json
-.env
+.env_private
 
 # archives
 *.zip
@@ -40,3 +40,4 @@ ops.json
 usercache.json
 whitelist.json
 world/
+world-backup.zip

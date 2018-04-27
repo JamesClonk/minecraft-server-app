@@ -1,4 +1,5 @@
 .env
+.env_private
 .git
 .gitmodules
 .gitignore
