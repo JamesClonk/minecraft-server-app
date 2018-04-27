@@ -92,8 +92,8 @@ func modifyServerProperties(property, value string) {
 }
 
 func createBackups() {
-	// backup world every 15 minutes, starting immediately an initial after 3min delay
-	time.Sleep(3 * time.Minute)
+	// backup world every 15 minutes, starting immediately an initial after 5min delay
+	time.Sleep(5 * time.Minute)
 	for {
 		rconExec("say Starting backup now...")
 		rconExec("save-off")
@@ -101,8 +101,7 @@ func createBackups() {
 		time.Sleep(5 * time.Second)
 
 		os.Remove("world-backup.tar.gz")
-		cmd := exec.Command("tar", "-cvzf", "world-backup.tar.gz", "*")
-		cmd.Dir = "world"
+		cmd := exec.Command("tar", "-cvzf", "world-backup.tar.gz", "world/")
 		if err := cmd.Run(); err != nil {
 			log.Fatalf("could not backup world: %s\n", err)
 		}
@@ -127,6 +126,8 @@ func restoreBackup() {
 
 	info, err := s3Client.StatObject(bucketName, "world-backup.tar.gz", minio.StatObjectOptions{})
 	if err == nil && info.Size > 0 {
+		fmt.Println("restoring backup...")
+
 		os.Remove("world-backup.tar.gz")
 		if err := s3Client.FGetObject(bucketName, "world-backup.tar.gz", "world-backup.tar.gz", minio.GetObjectOptions{}); err != nil {
 			log.Fatalf("could not download world backup: %s\n", err)
@@ -136,7 +137,8 @@ func restoreBackup() {
 			log.Fatalf("could not delete world folder: %s\n", err)
 		}
 
-		cmd := exec.Command("tar", "-xvzf", "world-backup.tar.gz", "-C", "world")
+		//os.Mkdir("world", os.ModePerm)
+		cmd := exec.Command("tar", "-xvzf", "world-backup.tar.gz")
 		if err := cmd.Run(); err != nil {
 			log.Fatalf("could not restore backup world: %s\n", err)
 		}
@@ -144,7 +146,7 @@ func restoreBackup() {
 }
 
 func rconExec(command string) {
-	console, err := rcon.Dial("localhost", env.MustGet("MINECRAFT_RCON_PASSWORD"))
+	console, err := rcon.Dial("localhost:25575", env.MustGet("MINECRAFT_RCON_PASSWORD"))
 	if err != nil {
 		log.Fatalf("failed to connect to minecraft rcon server: %s\n", err)
 	}

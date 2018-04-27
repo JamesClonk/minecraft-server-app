@@ -15,6 +15,7 @@ README.md
 service.json
 vendor
 scripts
+crash-reports
 glide.lock
 glide.yaml
 main.go

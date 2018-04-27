@@ -36,6 +36,7 @@ service.json
 *.class
 
 # mc stuff
+crash-reports/
 logs/
 usercache.json
 world/
