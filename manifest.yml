@@ -13,4 +13,4 @@ applications:
   env:
     GOPACKAGENAME: github.com/JamesClonk/minecraft-server-app
     BUCKET_NAME: world-backup
-  path: launcher.jar
+  path: minecraft-server-app.jar

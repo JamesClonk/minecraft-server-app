@@ -16,7 +16,7 @@ server:
 build:
 	GOARCH=amd64 GOOS=linux go build -i -o minecraft-server-app
 	javac launcher/*.java
-	jar -cfe launcher.jar launcher.Main launcher/*.class
+	jar -cfe minecraft-server-app.jar launcher.Main launcher/*.class minecraft-server-app minecraft.jar server.properties rcon-cli eula.txt
 
 setup:
 	go get -v -u github.com/codegangsta/gin
@@ -35,8 +35,8 @@ update:
 	git merge upstream/master
 	git push
 
-push:
-	cf push
+push: build
+	cf push -u none
 
 docker-build:
 	docker build -t jamesclonk:minecraft-server-app .

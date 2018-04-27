@@ -15,4 +15,4 @@ source .env_private
 
 # =============================================================================================
 echo "running minecraft-server-app ..."
-java -jar launcher.jar minecraft-server-app
+java -jar minecraft-server-app.jar minecraft-server-app
