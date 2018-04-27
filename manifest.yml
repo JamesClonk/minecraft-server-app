@@ -11,5 +11,6 @@ applications:
   - world-backup
   env:
     GOPACKAGENAME: github.com/JamesClonk/minecraft-server-app
-    BUCKET_NAME: world-backup
+    MINECRAFT_BACKUP_BUCKET_NAME: world-backup
+    MINECRAFT_RCON_PASSWORD: minecraft
   path: minecraft-server-app.jar

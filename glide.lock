@@ -1,10 +1,12 @@
-hash: 7a6fc762c6820f34ccb8128e1d3693d9139d98cc19f5a5b211dcc2517409a8d9
-updated: 2018-04-27T14:18:39.7180586+02:00
+hash: a18afea69bd8444224e179e2f3ca04f01d5b2b8885aefcfddc3d9bd206e584b0
+updated: 2018-04-27T21:31:56.389506834+02:00
 imports:
 - name: github.com/cloudfoundry-community/go-cfenv
   version: f920e9562d5f951cbf11785728f67258c38a10d0
 - name: github.com/go-ini/ini
   version: bda519ae5f4cbc60d391ff8610711627a08b86ae
+- name: github.com/james4k/rcon
+  version: 8fbb8268b60ac3303900326e126be05d504ab63d
 - name: github.com/minio/minio-go
   version: 9e124ec59547551cb3f1324f73623bbb30650cf8
   subpackages:
