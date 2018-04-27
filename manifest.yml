@@ -6,8 +6,9 @@ applications:
   instances: 1
   buildpack: java_buildpack
   # routes:
-  # - route: tcp.scapp.io:31337
-  # - route: tcp.applicationcloud.io:31337
+  # - route: minecraft-server-app.ci1-ares-031.swisslab.io
+  # - route: minecraft-server.ci1-ares-031.swisslab.io
+  # - route: tcp.ci1-ares-031.swisslab.io:31337
   services:
   - world-backup
   env:
