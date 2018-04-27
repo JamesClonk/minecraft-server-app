@@ -14,4 +14,3 @@ echo $PWD
 
 # =============================================================================================
 echo "running minecraft-server-app ..."
-./minecraft-server-app

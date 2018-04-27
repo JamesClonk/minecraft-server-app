@@ -1,20 +1,22 @@
-.PHONY: run server binary deploy setup glide test update push docker-build docker-run docker-publish docker-push
+.PHONY: run server build deploy setup glide test update push docker-build docker-run docker-publish docker-push
 SHELL := /bin/bash
 
 all: run
 
-run: binary
+run: build
 	scripts/run.sh
 
-deploy: binary
+deploy: build
 	scripts/setup.sh
 	scripts/deploy.sh
 
 server:
 	java -Xmx1024M -Xms1024M -jar minecraft.jar nogui
 
-binary:
+build:
 	GOARCH=amd64 GOOS=linux go build -i -o minecraft-server-app
+	javac launcher/*.java
+	jar -cfe launcher.jar launcher.Main launcher/*.class
 
 setup:
 	go get -v -u github.com/codegangsta/gin

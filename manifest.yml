@@ -5,13 +5,12 @@ applications:
   disk_quota: 1G
   instances: 1
   buildpack: java_buildpack
-  routes:
-  - route: tcp.scapp.io:31337
-  - route: tcp.applicationcloud.io:31337
+  # routes:
+  # - route: tcp.scapp.io:31337
+  # - route: tcp.applicationcloud.io:31337
   services:
   - world-backup
   env:
     GOPACKAGENAME: github.com/JamesClonk/minecraft-server-app
     BUCKET_NAME: world-backup
-  command: minecraft-server-app
-  path: .
+  path: launcher.jar

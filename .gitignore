@@ -30,7 +30,10 @@ service.json
 *.tgz
 *.gz
 *.tar
+
+# java
 *.jar
+*.class
 
 # mc stuff
 banned-ips.json
