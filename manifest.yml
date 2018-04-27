@@ -5,10 +5,8 @@ applications:
   disk_quota: 1G
   instances: 1
   buildpack: java_buildpack
-  # routes:
-  # - route: minecraft-server-app.ci1-ares-031.swisslab.io
-  # - route: minecraft-server.ci1-ares-031.swisslab.io
-  # - route: tcp.ci1-ares-031.swisslab.io:31337
+  routes:
+  - route: tcp.ci1-ares-031.swisslab.io:31337
   services:
   - world-backup
   env:
