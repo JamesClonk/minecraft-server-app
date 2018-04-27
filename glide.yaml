@@ -1,0 +1,4 @@
+package: github.com/JamesClonk/minecraft-server-app
+import:
+- package: github.com/cloudfoundry-community/go-cfenv
+  version: ^1.17.0

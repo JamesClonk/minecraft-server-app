@@ -12,3 +12,19 @@
 
 # Project-local glide cache, RE: https://github.com/Masterminds/glide/issues/736
 .glide/
+
+# binaries
+cf
+gin-bin
+minecraft-server-app
+
+# stuff
+LICENSE
+NOTICE
+
+# archives
+*.zip
+*.tgz
+*.gz
+*.tar
+*.jar
