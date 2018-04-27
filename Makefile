@@ -1,10 +1,14 @@
-.PHONY: run server binary setup glide test update push
+.PHONY: run server binary deploy setup glide test update push docker-build docker-run docker-publish docker-push
 SHELL := /bin/bash
 
 all: run
 
 run: binary
 	scripts/run.sh
+
+deploy: binary
+	scripts/setup.sh
+	scripts/deploy.sh
 
 server:
 	java -Xmx1024M -Xms1024M -jar minecraft.jar nogui
@@ -15,6 +19,7 @@ binary:
 setup:
 	go get -v -u github.com/codegangsta/gin
 	go get -v -u github.com/Masterminds/glide
+	scripts/setup.sh
 
 glide:
 	glide install --force
@@ -29,4 +34,16 @@ update:
 	git push
 
 push:
-	cf push -o JamesClonk/minecraft-server-app -i 1 -m 1536M -k 1G
+	cf push
+
+docker-build:
+	docker build -t jamesclonk:minecraft-server-app .
+
+docker-run:
+	docker run jamesclonk:minecraft-server-app
+
+docker-publish:
+	docker push jamesclonk:minecraft-server-app
+
+docker-push:
+	cf push -o jamesclonk/minecraft-server-app -i 1 -m 1536M -k 1G

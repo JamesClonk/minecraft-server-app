@@ -1,0 +1,16 @@
+---
+applications:
+- name: minecraft-server-app
+  memory: 1536M
+  disk_quota: 1G
+  instances: 1
+  buildpack: java_buildpack
+  routes:
+  - route: tcp.scapp.io:31337
+  - route: tcp.applicationcloud.io:31337
+  services:
+  - world-backup
+  env:
+    GOPACKAGENAME: github.com/JamesClonk/minecraft-server-app
+  command: minecraft-server-app
+path: .
