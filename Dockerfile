@@ -8,10 +8,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 	&& rm -rf /var/lib/apt/lists/*
 
 # add server
-COPY minecraft.jar /data/minecraft.jar
-COPY eula.txt /data/eula.txt
-COPY server-icon.png /data/server-icon.png
-WORKDIR /data
+COPY minecraft.jar /server/minecraft.jar
+COPY eula.txt /server/eula.txt
+COPY server.properties /server/server.properties
+COPY server-icon.png /server/server-icon.png
+WORKDIR /server
 
 # add supervisor
 COPY minecraft-server-app /minecraft-server-app
