@@ -1,10 +1,13 @@
-.PHONY: run binary setup glide test update push
+.PHONY: run server binary setup glide test update push
 SHELL := /bin/bash
 
 all: run
 
 run: binary
 	scripts/run.sh
+
+server:
+	java -Xmx1024M -Xms1024M -jar minecraft.jar nogui
 
 binary:
 	GOARCH=amd64 GOOS=linux go build -i -o minecraft-server-app
@@ -26,4 +29,4 @@ update:
 	git push
 
 push:
-	cf push
+	cf push -o JamesClonk/minecraft-server-app -i 1 -m 1536M -k 1G
