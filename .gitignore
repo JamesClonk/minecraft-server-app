@@ -23,6 +23,7 @@ rcon-cli
 LICENSE
 NOTICE
 service.json
+.env
 
 # archives
 *.zip
