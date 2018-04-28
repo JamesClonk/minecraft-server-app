@@ -94,10 +94,10 @@ func modifyServerProperties(property, value string) {
 }
 
 func createBackups() {
-	// backup world every 15 minutes, every hour, every weekday, every month, starting immediately after an initial 10min delay
+	// backup world every 20 minutes, every hour, every weekday, every month, starting immediately after an initial 10min delay
 	time.Sleep(10 * time.Minute)
-	go backup("world-backup.tar.gz", 15*time.Minute)
-	go backup(fmt.Sprintf("world-backup-hour-%d.tar.gz", time.Now().Hour), 1*time.Hour)
+	go backup("world-backup.tar.gz", 20*time.Minute)
+	go backup(fmt.Sprintf("world-backup-hour-%s.tar.gz", time.Now().Format("15")), 1*time.Hour)
 	go backup(fmt.Sprintf("world-backup-weekday-%s.tar.gz", strings.ToLower(time.Now().Weekday().String())), 24*time.Hour)
 	go backup(fmt.Sprintf("world-backup-month-%s.tar.gz", strings.ToLower(time.Now().Month().String())), 31*24*time.Hour)
 }
@@ -105,6 +105,7 @@ func createBackups() {
 func backup(filename string, interval time.Duration) {
 	for {
 		backupMutex.Lock()
+		fmt.Printf("Starting backup now: [%s] ...\n", filename)
 		rconExec("say Starting backup now...")
 		rconExec("save-off")
 		rconExec("save-all")
@@ -123,6 +124,7 @@ func backup(filename string, interval time.Duration) {
 		}
 
 		rconExec("say Backup complete!")
+		fmt.Printf("Backup complete! [%s]\n", filename)
 		backupMutex.Unlock()
 
 		time.Sleep(interval)
@@ -138,7 +140,7 @@ func restoreBackup() {
 
 	info, err := s3Client.StatObject(bucketName, "world-backup.tar.gz", minio.StatObjectOptions{})
 	if err == nil && info.Size > 0 {
-		fmt.Println("restoring backup...")
+		fmt.Println("Restoring backup...")
 
 		os.Remove("world-backup.tar.gz")
 		if err := s3Client.FGetObject(bucketName, "world-backup.tar.gz", "world-backup.tar.gz", minio.GetObjectOptions{}); err != nil {
@@ -154,6 +156,7 @@ func restoreBackup() {
 		if err := cmd.Run(); err != nil {
 			log.Fatalf("could not restore backup world: %s\n", err)
 		}
+		fmt.Println("Restore complete!")
 	}
 }
 
