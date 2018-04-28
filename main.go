@@ -96,39 +96,60 @@ func modifyServerProperties(property, value string) {
 func createBackups() {
 	// backup world every 20 minutes, every hour, every weekday, every month, starting immediately after an initial 10min delay
 	time.Sleep(10 * time.Minute)
-	go backup("world-backup.tar.gz", 20*time.Minute)
-	go backup(fmt.Sprintf("world-backup-hour-%s.tar.gz", time.Now().Format("15")), 1*time.Hour)
-	go backup(fmt.Sprintf("world-backup-weekday-%s.tar.gz", strings.ToLower(time.Now().Weekday().String())), 24*time.Hour)
-	go backup(fmt.Sprintf("world-backup-month-%s.tar.gz", strings.ToLower(time.Now().Month().String())), 31*24*time.Hour)
+
+	// every 20 minutes
+	go func() {
+		for {
+			backup("world-backup.tar.gz")
+			time.Sleep(20 * time.Minute)
+		}
+	}()
+	// every hour
+	go func() {
+		for {
+			backup(fmt.Sprintf("world-backup-hour-%s.tar.gz", time.Now().Format("15")))
+			time.Sleep(1 * time.Hour)
+		}
+	}()
+	// every weekday
+	go func() {
+		for {
+			backup(fmt.Sprintf("world-backup-weekday-%s.tar.gz", strings.ToLower(time.Now().Weekday().String())))
+			time.Sleep(24 * time.Hour)
+		}
+	}()
+	// every month
+	go func() {
+		for {
+			backup(fmt.Sprintf("world-backup-month-%s.tar.gz", strings.ToLower(time.Now().Month().String())))
+			time.Sleep(30 * 24 * time.Hour)
+		}
+	}()
 }
 
-func backup(filename string, interval time.Duration) {
-	for {
-		backupMutex.Lock()
-		fmt.Printf("Starting backup now: [%s] ...\n", filename)
-		rconExec("say Starting backup now...")
-		rconExec("save-off")
-		rconExec("save-all")
-		time.Sleep(10 * time.Second)
+func backup(filename string) {
+	backupMutex.Lock()
+	fmt.Printf("Starting backup now: [%s] ...\n", filename)
+	rconExec("say Starting backup now...")
+	rconExec("save-off")
+	rconExec("save-all")
+	time.Sleep(10 * time.Second)
 
-		os.Remove(filename)
-		cmd := exec.Command("tar", "-cvzf", filename, "world/")
-		if err := cmd.Run(); err != nil {
-			log.Fatalf("could not backup world: %s\n", err)
-		}
-		rconExec("save-on")
-
-		if _, err := s3Client.FPutObject(bucketName, filename, filename,
-			minio.PutObjectOptions{ContentType: "application/gzip"}); err != nil {
-			log.Fatalf("could not upload world backup: %s\n", err)
-		}
-
-		rconExec("say Backup complete!")
-		fmt.Printf("Backup complete! [%s]\n", filename)
-		backupMutex.Unlock()
-
-		time.Sleep(interval)
+	os.Remove(filename)
+	cmd := exec.Command("tar", "-cvzf", filename, "world/")
+	if err := cmd.Run(); err != nil {
+		log.Fatalf("could not backup world: %s\n", err)
 	}
+	rconExec("save-on")
+
+	if _, err := s3Client.FPutObject(bucketName, filename, filename,
+		minio.PutObjectOptions{ContentType: "application/gzip"}); err != nil {
+		log.Fatalf("could not upload world backup: %s\n", err)
+	}
+
+	rconExec("say Backup complete!")
+	fmt.Printf("Backup complete! [%s]\n", filename)
+	backupMutex.Unlock()
 }
 
 func restoreBackup() {
