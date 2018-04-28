@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/JamesClonk/minecraft-server-app/env"
@@ -17,8 +18,9 @@ import (
 )
 
 var (
-	s3Client   *minio.Client
-	bucketName = "world-backup"
+	s3Client    *minio.Client
+	bucketName  = "world-backup"
+	backupMutex = &sync.Mutex{}
 )
 
 func init() {
@@ -92,28 +94,38 @@ func modifyServerProperties(property, value string) {
 }
 
 func createBackups() {
-	// backup world every 15 minutes, starting immediately an initial after 5min delay
-	time.Sleep(5 * time.Minute)
+	// backup world every 15 minutes, every hour, every weekday, every month, starting immediately after an initial 10min delay
+	time.Sleep(10 * time.Minute)
+	go backup("world-backup.tar.gz", 15*time.Minute)
+	go backup(fmt.Sprintf("world-backup-hour-%d.tar.gz", time.Now().Hour), 1*time.Hour)
+	go backup(fmt.Sprintf("world-backup-weekday-%s.tar.gz", strings.ToLower(time.Now().Weekday().String())), 24*time.Hour)
+	go backup(fmt.Sprintf("world-backup-month-%s.tar.gz", strings.ToLower(time.Now().Month().String())), 31*24*time.Hour)
+}
+
+func backup(filename string, interval time.Duration) {
 	for {
+		backupMutex.Lock()
 		rconExec("say Starting backup now...")
 		rconExec("save-off")
 		rconExec("save-all")
-		time.Sleep(5 * time.Second)
+		time.Sleep(10 * time.Second)
 
-		os.Remove("world-backup.tar.gz")
-		cmd := exec.Command("tar", "-cvzf", "world-backup.tar.gz", "world/")
+		os.Remove(filename)
+		cmd := exec.Command("tar", "-cvzf", filename, "world/")
 		if err := cmd.Run(); err != nil {
 			log.Fatalf("could not backup world: %s\n", err)
 		}
 		rconExec("save-on")
 
-		if _, err := s3Client.FPutObject(bucketName, "world-backup.tar.gz", "world-backup.tar.gz",
+		if _, err := s3Client.FPutObject(bucketName, filename, filename,
 			minio.PutObjectOptions{ContentType: "application/gzip"}); err != nil {
 			log.Fatalf("could not upload world backup: %s\n", err)
 		}
-		rconExec("say Backup complete!")
 
-		time.Sleep(15 * time.Minute)
+		rconExec("say Backup complete!")
+		backupMutex.Unlock()
+
+		time.Sleep(interval)
 	}
 }
 

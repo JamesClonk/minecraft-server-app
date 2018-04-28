@@ -1,4 +1,4 @@
-.PHONY: run server build deploy setup glide test update push docker-build docker-run docker-publish docker-push
+.PHONY: run server build deploy setup glide test update push
 SHELL := /bin/bash
 
 all: run
@@ -19,7 +19,7 @@ build:
 	jar -cfe minecraft-server-app.jar launcher.Main launcher/*.class minecraft-server-app minecraft.jar server.properties rcon-cli eula.txt ops.json banned-ips.json banned-players.json whitelist.json server-icon.png
 
 setup:
-	go get -v -u github.com/codegangsta/gin
+	# go get -v -u github.com/codegangsta/gin
 	go get -v -u github.com/Masterminds/glide
 	scripts/setup.sh
 
@@ -36,16 +36,4 @@ update:
 	git push
 
 push: build
-	cf push -u none
-
-docker-build:
-	docker build -t jamesclonk:minecraft-server-app .
-
-docker-run:
-	docker run jamesclonk:minecraft-server-app
-
-docker-publish:
-	docker push jamesclonk:minecraft-server-app
-
-docker-push:
-	cf push -o jamesclonk/minecraft-server-app -i 1 -m 1536M -k 1G
+	cf push -u process
