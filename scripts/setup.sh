@@ -16,3 +16,7 @@ wget https://launcher.mojang.com/mc/game/1.12.2/server/886945bfb2b978778c3a0288f
 echo "downloading rcon cli ..."
 wget https://github.com/itzg/rcon-cli/releases/download/1.3/rcon-cli_linux_amd64 -O rcon-cli
 chmod +x rcon-cli
+
+echo "downloading minio client ..."
+wget https://dl.minio.io/client/mc/release/linux-amd64/mc -O mc
+chmod +x mc

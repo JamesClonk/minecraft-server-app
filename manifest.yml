@@ -4,6 +4,7 @@ applications:
   memory: 1536M
   disk_quota: 1G
   instances: 1
+  health-check-type: port
   buildpack: java_buildpack
   routes:
   - route: tcp.ci1-ares-031.swisslab.io:31337

@@ -18,6 +18,7 @@ cf
 gin-bin
 minecraft-server-app
 rcon-cli
+mc
 
 # stuff
 LICENSE

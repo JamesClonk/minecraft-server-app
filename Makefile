@@ -16,7 +16,7 @@ server:
 build:
 	GOARCH=amd64 GOOS=linux go build -i -o minecraft-server-app
 	javac launcher/*.java
-	jar -cfe minecraft-server-app.jar launcher.Main launcher/*.class minecraft-server-app minecraft.jar server.properties rcon-cli eula.txt ops.json banned-ips.json banned-players.json whitelist.json server-icon.png
+	jar -cfe minecraft-server-app.jar launcher.Main launcher/*.class minecraft-server-app minecraft.jar server.properties rcon-cli mc eula.txt ops.json banned-ips.json banned-players.json whitelist.json server-icon.png scripts/backup.sh
 
 setup:
 	# go get -v -u github.com/codegangsta/gin
@@ -36,4 +36,4 @@ update:
 	git push
 
 push: build
-	cf push -u process
+	cf push
