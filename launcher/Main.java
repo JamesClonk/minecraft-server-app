@@ -8,12 +8,20 @@ import java.lang.ProcessBuilder.Redirect;
 
 public class Main {
     public static void main(final String[] args) throws IOException, InterruptedException {
-    	String executable = "minecraft-server-app";
-    	if (args.length > 0) {
-			executable = args[0];
-    	}
+        String executable = "minecraft-server-app";
+        if (args.length > 0) {
+            executable = args[0];
+        }
 
-    	File cd = new File(System.getProperty("user.dir"));
+        File cd = new File(System.getProperty("user.dir"));
+        try {
+            Runtime.getRuntime().exec("chmod +x "+cd.getAbsolutePath()+"/mc");
+            Runtime.getRuntime().exec("chmod +x "+cd.getAbsolutePath()+"/rcon-cli");
+            Runtime.getRuntime().exec("chmod +x "+cd.getAbsolutePath()+"/"+executable);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
         ProcessBuilder pb = new ProcessBuilder(cd.getAbsolutePath()+"/"+executable);
         pb.directory(cd);
         pb.redirectOutput(Redirect.INHERIT);
