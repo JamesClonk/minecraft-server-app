@@ -4,5 +4,29 @@
     "name": "JamesClonk",
     "level": 4,
     "bypassesPlayerLimit": true
+  },
+  {
+    "uuid": "1be0b2c2-2f3e-483d-8e6b-0b1bb7195f79",
+    "name": "rumpli",
+    "level": 3,
+    "bypassesPlayerLimit": false
+  },
+  {
+    "uuid": "5bddcfff-abd8-4d0b-b578-d9aa431f9635",
+    "name": "zlupanda",
+    "level": 3,
+    "bypassesPlayerLimit": false
+  },
+  {
+    "uuid": "9019cb00-9d4c-42cd-aebe-72bc714205f4",
+    "name": "VirusMPX",
+    "level": 3,
+    "bypassesPlayerLimit": false
+  },
+  {
+    "uuid": "b8a11b04-fd91-4fef-ac23-06543bd79e61",
+    "name": "lafunamor",
+    "level": 3,
+    "bypassesPlayerLimit": false
   }
 ]
