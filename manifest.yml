@@ -2,7 +2,7 @@
 applications:
 - name: minecraft-server-app
   memory: 3G
-  disk_quota: 1G
+  disk_quota: 2G
   instances: 1
   health-check-type: port
   buildpack: java_buildpack
