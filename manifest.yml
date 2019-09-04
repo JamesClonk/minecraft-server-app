@@ -1,7 +1,7 @@
 ---
 applications:
 - name: minecraft-server-app
-  memory: 1536M
+  memory: 3G
   disk_quota: 1G
   instances: 1
   health-check-type: port
@@ -12,6 +12,7 @@ applications:
   - world-backup
   env:
     GOPACKAGENAME: github.com/JamesClonk/minecraft-server-app
+    JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 11.+ } }'
     MINECRAFT_BACKUP_BUCKET_NAME: world-backup
     MINECRAFT_RCON_PASSWORD: minecraft
   path: minecraft-server-app.jar
